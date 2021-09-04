@@ -228,7 +228,28 @@ const editBookByIdHandler = (request, h) => {
   return response;
 };
 
-
+const deleteBookByIdHandler = (request, h) => {
+  const { bookId } = request.params;
+  const index = books.findIndex((book) => book.id === bookId);
+  // * make sure that the book not out of bound
+  if (index !== -1) {
+    // ! splice purpose to removing array element
+    books.splice(index, 1);
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus',
+    });
+    response.code(200);
+    return response;
+  }
+  // ! condition if the id not responding
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan',
+  });
+  response.code(404);
+  return response;
+};
 
 // * exporting module
 module.exports = {
@@ -236,5 +257,5 @@ module.exports = {
   getAllBooksHandler,
   getBookByIdHandler,
   editBookByIdHandler,
-
+  deleteBookByIdHandler,
 };
